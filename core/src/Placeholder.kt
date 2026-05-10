@@ -1,6 +1,7 @@
 package cat.freya.khs
 
 import cat.freya.khs.db.PlayerStat
+import cat.freya.khs.game.Game
 import java.util.UUID
 import kotlin.text.toULong
 
@@ -59,6 +60,32 @@ private fun handlePlayerStat(req: PlaceholderRequest): String {
 fun handlePlaceholder(req: PlaceholderRequest): String {
     val arg0 = req.arg0 ?: return req.invalid
     return when (arg0) {
+        "status" -> {
+            val game = req.plugin.game
+            val placeholderLocale = req.plugin.locale.placeholder.status
+            when (game.status) {
+                Game.Status.LOBBY -> if (game.timer != null) placeholderLocale.starting else placeholderLocale.waiting
+                Game.Status.HIDING, Game.Status.SEEKING -> placeholderLocale.inGame
+                Game.Status.FINISHED -> placeholderLocale.ending
+            }
+        }
+
+        "minplayers" -> {
+            req.plugin.config.lobby.min
+                .toString()
+        }
+
+        "maxplayers" -> {
+            req.plugin.config.lobby.max
+                .toString()
+        }
+
+        "players" -> {
+            req.plugin.game.teams
+                .size()
+                .toString()
+        }
+
         // game info
         "hiders" -> {
             req.plugin.game.teams

@@ -40,10 +40,22 @@ data class LocalePrefixConfig(
     var gameOver: String = "&aGame Over > &f",
 )
 
+data class LocalePlaceholderStatusConfig(
+    @Comment("Returned by the %hs_status% placeholder when the game is waiting for players")
+    var waiting: String = "Waiting",
+    @Comment("Returned by the %hs_status% placeholder when the game is starting")
+    var starting: String = "Starting",
+    @Comment("Returned by the %hs_status% placeholder when the game is in progress")
+    var inGame: String = "In-game",
+    @Comment("Returned by the %hs_status% placeholder when the game has ended")
+    var ending: String = "Ending",
+)
+
 data class LocalePlaceholderConfig(
     @Comment("Displayed string if the requested placeholder is invalid")
     var invalid: String = "{Error}",
     @Comment("Displayed string if the requested placeholder is empty") var noData: String = "-",
+    var status: LocalePlaceholderStatusConfig = LocalePlaceholderStatusConfig(),
 )
 
 data class LocaleCommandConfig(
@@ -305,8 +317,7 @@ data class KhsLocale(
     @Section("Message prefixes")
     @Comment("Specify prefixes for plugin chat messages.")
     var prefix: LocalePrefixConfig = LocalePrefixConfig(),
-    @Section("Placeholder errors")
-    @Comment("PlaceholderAPI error strings")
+    @Section("Placeholder messages")
     var placeholder: LocalePlaceholderConfig = LocalePlaceholderConfig(),
     @Section("Command responses") var command: LocaleCommandConfig = LocaleCommandConfig(),
     @Section("Gameplay") var game: LocaleGameConfig = LocaleGameConfig(),
